@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="Connectez-vous à votre espace avec votre compte Google.">
+  <title>Connexion — Mon espace</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #172033;
+      background: #f5f7fb;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 32px 20px;
+      background:
+        radial-gradient(ellipse at 12% 18%, rgb(213 226 255 / 55%), transparent 34rem),
+        radial-gradient(ellipse at 88% 84%, rgb(229 220 255 / 48%), transparent 31rem),
+        #f5f7fb;
+    }
+
+    .page {
+      width: min(100%, 980px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      margin: 0 0 22px 4px;
+      color: #29344a;
+      font-size: 15px;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: white;
+      background: linear-gradient(145deg, #647ef7, #7356d9);
+      box-shadow: 0 5px 12px rgb(92 104 213 / 22%);
+      font-size: 17px;
+      font-weight: 750;
+    }
+
+    .card {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      overflow: hidden;
+      min-height: 520px;
+      border: 1px solid rgb(222 227 238 / 90%);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgb(41 53 89 / 11%), 0 2px 8px rgb(41 53 89 / 4%);
+    }
+
+    .intro {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      padding: clamp(32px, 5vw, 58px);
+      color: white;
+      background: linear-gradient(145deg, #273c79 0%, #394c91 54%, #5e57a8 100%);
+    }
+
+    .intro::before,
+    .intro::after {
+      position: absolute;
+      z-index: 0;
+      border: 1px solid rgb(255 255 255 / 12%);
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
+    }
+
+    .intro::before {
+      width: 370px;
+      height: 370px;
+      right: -205px;
+      top: -95px;
+      box-shadow: 0 0 0 32px rgb(255 255 255 / 3%), 0 0 0 68px rgb(255 255 255 / 3%);
+    }
+
+    .intro::after {
+      width: 250px;
+      height: 250px;
+      left: -150px;
+      bottom: 60px;
+      box-shadow: 0 0 0 30px rgb(255 255 255 / 3%);
+    }
+
+    .intro-content,
+    .intro-foot {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 23px;
+      color: #dce4ff;
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #a7f3cf;
+      box-shadow: 0 0 0 4px rgb(167 243 207 / 13%);
+      content: "";
+    }
+
+    h1 {
+      max-width: 400px;
+      margin: 0;
+      font-size: clamp(34px, 4vw, 48px);
+      font-weight: 650;
+      letter-spacing: -0.055em;
+      line-height: 1.1;
+    }
+
+    .intro-copy {
+      max-width: 360px;
+      margin: 20px 0 0;
+      color: #d8def6;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .intro-foot {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-top: 40px;
+      color: #d8def6;
+      font-size: 12px;
+    }
+
+    .shield {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 1px solid rgb(255 255 255 / 20%);
+      border-radius: 10px;
+      background: rgb(255 255 255 / 9%);
+    }
+
+    .login {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(32px, 5vw, 60px);
+    }
+
+    .login h2 {
+      margin: 0;
+      color: #172033;
+      font-size: 25px;
+      font-weight: 650;
+      letter-spacing: -0.04em;
+    }
+
+    .login-copy {
+      margin: 10px 0 30px;
+      color: #68738a;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .google-button {
+      width: 100%;
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 18px;
+      border: 1px solid #d5dae4;
+      border-radius: 10px;
+      color: #293245;
+      background: #fff;
+      box-shadow: 0 1px 2px rgb(20 30 55 / 5%);
+      cursor: pointer;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    }
+
+    .google-button:hover {
+      border-color: #b8c2d4;
+      background: #fbfcfe;
+      box-shadow: 0 4px 12px rgb(20 30 55 / 8%);
+      transform: translateY(-1px);
+    }
+
+    .google-button:focus-visible,
+    .notice-close:focus-visible {
+      outline: 3px solid #879cff;
+      outline-offset: 3px;
+    }
+
+    .google-icon {
+      width: 19px;
+      height: 19px;
+      flex: 0 0 auto;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin: 26px 0 19px;
+      color: #929bad;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .divider::before,
+    .divider::after {
+      height: 1px;
+      flex: 1;
+      background: #e9ecf2;
+      content: "";
+    }
+
+    .privacy {
+      margin: 0;
+      color: #788297;
+      font-size: 12px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .privacy strong {
+      color: #566177;
+      font-weight: 600;
+    }
+
+    .notice {
+      display: none;
+      margin-top: 18px;
+      padding: 13px 15px;
+      border: 1px solid #f0dfb2;
+      border-radius: 9px;
+      color: #684f16;
+      background: #fff9e9;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .notice[aria-hidden="false"] {
+      display: block;
+    }
+
+    .notice strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 12px;
+    }
+
+    .notice-close {
+      float: right;
+      margin: 0 0 4px 8px;
+      padding: 0 3px;
+      border: 0;
+      color: inherit;
+      background: transparent;
+      cursor: pointer;
+      font: inherit;
+      font-size: 17px;
+      line-height: 1;
+    }
+
+    .page-foot {
+      margin: 18px 4px 0;
+      color: #8992a4;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 22px 16px;
+      }
+
+      .brand {
+        margin-bottom: 16px;
+      }
+
+      .card {
+        grid-template-columns: 1fr;
+        min-height: 0;
+        border-radius: 19px;
+      }
+
+      .intro {
+        min-height: 250px;
+        padding: 31px;
+      }
+
+      .intro h1 {
+        max-width: 440px;
+        font-size: clamp(32px, 8vw, 42px);
+      }
+
+      .intro-copy {
+        max-width: 440px;
+        margin-top: 12px;
+      }
+
+      .intro-foot {
+        margin-top: 27px;
+      }
+
+      .login {
+        padding: 34px 31px 38px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="brand" aria-label="Mon espace">
+      <span class="brand-mark" aria-hidden="true">M</span>
+      <span>Mon espace</span>
+    </div>
+
+    <section class="card" aria-labelledby="page-title">
+      <div class="intro">
+        <div class="intro-content">
+          <p class="eyebrow">Accès sécurisé</p>
+          <h1 id="page-title">Tout commence ici.</h1>
+          <p class="intro-copy">Connectez-vous simplement et retrouvez votre espace personnel en toute sérénité.</p>
+        </div>
+        <div class="intro-foot">
+          <span class="shield" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3 19 6v5c0 4.7-2.9 8.2-7 10-4.1-1.8-7-5.3-7-10V6l7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              <path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span>Vos informations restent protégées.</span>
+        </div>
+      </div>
+
+      <div class="login">
+        <h2>Bienvenue</h2>
+        <p class="login-copy">Utilisez votre compte Google pour accéder à votre espace.</p>
+
+        <button class="google-button" id="google-login" type="button" aria-describedby="privacy-note">
+          <svg class="google-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z" transform="translate(0 4)"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.75 7.18l7.72 5.99c4.51-4.18 7.07-10.33 7.07-17.64Z" transform="translate(0 4)"/>
+            <path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.87.93 7.54 2.56 10.78l7.97-6.19Z" transform="translate(0 4)"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.81l-7.72-5.99c-2.14 1.45-4.89 2.3-8.19 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48Z" transform="translate(0 -4)"/>
+          </svg>
+          Continuer avec Google
+        </button>
+
+        <div class="divider" aria-hidden="true">Simple et sécurisé</div>
+        <p class="privacy" id="privacy-note">En continuant, vous acceptez nos <strong>conditions d’utilisation</strong> et notre <strong>politique de confidentialité</strong>.</p>
+        <div class="notice" id="oauth-notice" role="status" aria-live="polite" aria-hidden="true">
+          <button class="notice-close" id="notice-close" type="button" aria-label="Fermer">×</button>
+          <strong>Connexion à configurer</strong>
+          Cette page est une maquette statique. Pour activer la connexion Google, configurez un client OAuth pour votre application.
+        </div>
+      </div>
+    </section>
+
+    <p class="page-foot">© 2026 Mon espace · Une connexion pensée pour votre tranquillité</p>
+  </main>
+
+  <script>
+    const notice = document.getElementById("oauth-notice");
+    const loginButton = document.getElementById("google-login");
+    const closeButton = document.getElementById("notice-close");
+
+    loginButton.addEventListener("click", () => {
+      notice.setAttribute("aria-hidden", "false");
+      closeButton.focus();
+    });
+
+    closeButton.addEventListener("click", () => {
+      notice.setAttribute("aria-hidden", "true");
+      loginButton.focus();
+    });
+  </script>
+</body>
+</html>
