@@ -200,40 +200,14 @@
     .google-button {
       width: 100%;
       min-height: 52px;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      padding: 0 18px;
-      border: 1px solid #d5dae4;
-      border-radius: 10px;
-      color: #293245;
-      background: #fff;
-      box-shadow: 0 1px 2px rgb(20 30 55 / 5%);
-      cursor: pointer;
-      font: inherit;
-      font-size: 14px;
-      font-weight: 600;
-      transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
     }
 
-    .google-button:hover {
-      border-color: #b8c2d4;
-      background: #fbfcfe;
-      box-shadow: 0 4px 12px rgb(20 30 55 / 8%);
-      transform: translateY(-1px);
-    }
-
-    .google-button:focus-visible,
     .notice-close:focus-visible {
       outline: 3px solid #879cff;
       outline-offset: 3px;
-    }
-
-    .google-icon {
-      width: 19px;
-      height: 19px;
-      flex: 0 0 auto;
     }
 
     .divider {
@@ -282,6 +256,18 @@
 
     .notice[aria-hidden="false"] {
       display: block;
+    }
+
+    .notice--success {
+      border-color: #b7e4c7;
+      color: #1d5b35;
+      background: #effaf2;
+    }
+
+    .notice--error {
+      border-color: #f0c2c2;
+      color: #7a2929;
+      background: #fff2f2;
     }
 
     .notice strong {
@@ -388,22 +374,14 @@
         <h2>Bienvenue</h2>
         <p class="login-copy">Utilisez votre compte Google pour accéder à votre espace.</p>
 
-        <button class="google-button" id="google-login" type="button" aria-describedby="privacy-note">
-          <svg class="google-icon" viewBox="0 0 48 48" aria-hidden="true">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z" transform="translate(0 4)"/>
-            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.75 7.18l7.72 5.99c4.51-4.18 7.07-10.33 7.07-17.64Z" transform="translate(0 4)"/>
-            <path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.87.93 7.54 2.56 10.78l7.97-6.19Z" transform="translate(0 4)"/>
-            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.81l-7.72-5.99c-2.14 1.45-4.89 2.3-8.19 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48Z" transform="translate(0 -4)"/>
-          </svg>
-          Continuer avec Google
-        </button>
+        <div class="google-button" id="google-login" aria-describedby="privacy-note"></div>
 
         <div class="divider" aria-hidden="true">Simple et sécurisé</div>
         <p class="privacy" id="privacy-note">En continuant, vous acceptez nos <strong>conditions d’utilisation</strong> et notre <strong>politique de confidentialité</strong>.</p>
         <div class="notice" id="oauth-notice" role="status" aria-live="polite" aria-hidden="true">
           <button class="notice-close" id="notice-close" type="button" aria-label="Fermer">×</button>
-          <strong>Connexion à configurer</strong>
-          Cette page est une maquette statique. Pour activer la connexion Google, configurez un client OAuth pour votre application.
+          <strong id="oauth-notice-title"></strong>
+          <span id="oauth-notice-message"></span>
         </div>
       </div>
     </section>
@@ -411,19 +389,54 @@
     <p class="page-foot">© 2026 Mon espace · Une connexion pensée pour votre tranquillité</p>
   </main>
 
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script>
+    const googleClientId = "271337269871-c1pr9b5q6hncnicp5d4sc7h0ka98m7dh.apps.googleusercontent.com";
     const notice = document.getElementById("oauth-notice");
     const loginButton = document.getElementById("google-login");
     const closeButton = document.getElementById("notice-close");
+    const noticeTitle = document.getElementById("oauth-notice-title");
+    const noticeMessage = document.getElementById("oauth-notice-message");
 
-    loginButton.addEventListener("click", () => {
+    function showNotice(title, message, state) {
+      noticeTitle.textContent = title;
+      noticeMessage.textContent = message;
+      notice.classList.remove("notice--success", "notice--error");
+      if (state) notice.classList.add(`notice--${state}`);
       notice.setAttribute("aria-hidden", "false");
-      closeButton.focus();
+    }
+
+    window.addEventListener("load", () => {
+      if (!window.google?.accounts?.id) {
+        showNotice("Connexion indisponible", "Le service de connexion Google n’a pas pu être chargé. Réessayez plus tard.", "error");
+        return;
+      }
+
+      window.google.accounts.id.initialize({
+        client_id: googleClientId,
+        callback: (response) => {
+          if (!response.credential) {
+            showNotice("Échec de la connexion", "Google n’a pas renvoyé d’identifiant valide. Veuillez réessayer.", "error");
+            return;
+          }
+
+          showNotice("Connexion réussie", "Votre compte Google est authentifié.", "success");
+        }
+      });
+
+      window.google.accounts.id.renderButton(loginButton, {
+        type: "standard",
+        theme: "outline",
+        size: "large",
+        text: "continue_with",
+        shape: "rectangular",
+        width: Math.min(400, Math.floor(loginButton.getBoundingClientRect().width)),
+        locale: "fr"
+      });
     });
 
     closeButton.addEventListener("click", () => {
       notice.setAttribute("aria-hidden", "true");
-      loginButton.focus();
     });
   </script>
 </body>
