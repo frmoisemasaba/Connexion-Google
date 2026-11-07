@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="Votre espace personnel Mon espace.">
+  <title>Accueil — Mon espace</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #172033;
+      background: #f5f7fb;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 12% 18%, rgb(213 226 255 / 55%), transparent 34rem),
+        radial-gradient(ellipse at 88% 84%, rgb(229 220 255 / 48%), transparent 31rem),
+        #f5f7fb;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .page {
+      width: min(100% - 40px, 1080px);
+      margin: 0 auto;
+      padding: 30px 0 24px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      color: #29344a;
+      font-size: 15px;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: white;
+      background: linear-gradient(145deg, #647ef7, #7356d9);
+      box-shadow: 0 5px 12px rgb(92 104 213 / 22%);
+      font-size: 17px;
+      font-weight: 750;
+    }
+
+    .logout {
+      min-height: 42px;
+      padding: 0 16px;
+      border: 1px solid #dce1eb;
+      border-radius: 10px;
+      color: #344057;
+      background: rgb(255 255 255 / 85%);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 150ms ease, border-color 150ms ease;
+    }
+
+    .logout:hover {
+      border-color: #c9d0df;
+      background: #fff;
+    }
+
+    .logout:focus-visible,
+    a:focus-visible {
+      outline: 3px solid #879cff;
+      outline-offset: 3px;
+    }
+
+    .welcome {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(32px, 6vw, 68px);
+      border-radius: 24px;
+      color: #fff;
+      background: linear-gradient(135deg, #273c79, #46549b 62%, #695eb3);
+      box-shadow: 0 20px 55px rgb(41 53 89 / 16%);
+    }
+
+    .welcome::after {
+      position: absolute;
+      top: -150px;
+      right: -85px;
+      width: 340px;
+      height: 340px;
+      border: 1px solid rgb(255 255 255 / 13%);
+      border-radius: 50%;
+      box-shadow: 0 0 0 35px rgb(255 255 255 / 3%), 0 0 0 75px rgb(255 255 255 / 3%);
+      content: "";
+      pointer-events: none;
+    }
+
+    .welcome-content {
+      position: relative;
+      z-index: 1;
+      max-width: 650px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      color: #dce4ff;
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #a7f3cf;
+      content: "";
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 6vw, 54px);
+      font-weight: 650;
+      letter-spacing: -0.055em;
+      line-height: 1.1;
+    }
+
+    .welcome-copy {
+      max-width: 540px;
+      margin: 18px 0 0;
+      color: #d8def6;
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .section-heading {
+      margin: 35px 0 16px;
+      color: #29344a;
+      font-size: 19px;
+      font-weight: 650;
+      letter-spacing: -0.03em;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      min-height: 176px;
+      padding: 22px;
+      border: 1px solid rgb(222 227 238 / 90%);
+      border-radius: 17px;
+      background: rgb(255 255 255 / 90%);
+      box-shadow: 0 8px 25px rgb(41 53 89 / 5%);
+    }
+
+    .card-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      color: #5368cf;
+      background: #eef0ff;
+      font-size: 18px;
+    }
+
+    .card h3 {
+      margin: 0;
+      color: #29344a;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .card p {
+      margin: 8px 0 0;
+      color: #748097;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      margin: 26px 0 0;
+      color: #8992a4;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .page {
+        width: min(100% - 32px, 560px);
+        padding-top: 20px;
+      }
+
+      .welcome {
+        border-radius: 19px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .card {
+        min-height: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <div class="brand" aria-label="Mon espace">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <span>Mon espace</span>
+      </div>
+      <button class="logout" id="logout-button" type="button">Se déconnecter</button>
+    </header>
+
+    <section class="welcome" aria-labelledby="welcome-title">
+      <div class="welcome-content">
+        <p class="eyebrow">Votre espace personnel</p>
+        <h1 id="welcome-title">Bienvenue chez vous.</h1>
+        <p class="welcome-copy">Votre connexion est réussie. Retrouvez ici les informations utiles pour profiter de votre espace en toute simplicité.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="overview-title">
+      <h2 class="section-heading" id="overview-title">Votre espace en un coup d’œil</h2>
+      <div class="cards">
+        <article class="card">
+          <span class="card-icon" aria-hidden="true">✓</span>
+          <h3>Connexion réussie</h3>
+          <p>Votre compte Google a été utilisé pour ouvrir cette session.</p>
+        </article>
+        <article class="card">
+          <span class="card-icon" aria-hidden="true">⌂</span>
+          <h3>Un espace à vous</h3>
+          <p>Retrouvez vos prochaines informations et fonctionnalités ici.</p>
+        </article>
+        <article class="card">
+          <span class="card-icon" aria-hidden="true">↗</span>
+          <h3>Pour commencer</h3>
+          <p>Votre accueil est prêt. Vous pouvez vous déconnecter à tout moment.</p>
+        </article>
+      </div>
+    </section>
+
+    <p class="footer">© 2026 Mon espace · Une connexion pensée pour votre tranquillité</p>
+  </main>
+
+  <script>
+    if (sessionStorage.getItem("google-connected") !== "true") {
+      window.location.replace("index.html");
+    }
+
+    document.getElementById("logout-button").addEventListener("click", () => {
+      sessionStorage.removeItem("google-connected");
+      window.location.replace("index.html");
+    });
+  </script>
+</body>
+</html>

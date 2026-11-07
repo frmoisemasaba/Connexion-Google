@@ -296,93 +296,6 @@
       text-align: center;
     }
 
-    .dashboard {
-      position: fixed;
-      z-index: 2;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      min-height: 100vh;
-      padding: 24px clamp(20px, 6vw, 80px);
-      background: #f5f7fb;
-    }
-
-    .dashboard[hidden] {
-      display: none;
-    }
-
-    .dashboard-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      width: min(100%, 1100px);
-      margin: 0 auto;
-    }
-
-    .dashboard-brand {
-      color: #29344a;
-      font-size: 16px;
-      font-weight: 650;
-      letter-spacing: -0.02em;
-    }
-
-    .logout-button {
-      min-height: 42px;
-      padding: 0 16px;
-      border: 1px solid #dce1eb;
-      border-radius: 9px;
-      color: #172033;
-      background: #fff;
-      cursor: pointer;
-      font: inherit;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .logout-button:hover {
-      background: #f8f9fc;
-    }
-
-    .logout-button:focus-visible {
-      outline: 3px solid #879cff;
-      outline-offset: 3px;
-    }
-
-    .dashboard-content {
-      width: min(100%, 1100px);
-      margin: auto;
-      padding: 80px 0;
-    }
-
-    .dashboard-content h1 {
-      max-width: none;
-      margin: 0;
-      color: #172033;
-      font-size: clamp(32px, 6vw, 52px);
-      letter-spacing: -0.05em;
-      line-height: 1.12;
-    }
-
-    .dashboard-copy {
-      max-width: 520px;
-      margin: 18px 0 0;
-      color: #68738a;
-      font-size: 16px;
-      line-height: 1.7;
-    }
-
-    @media (max-width: 480px) {
-      .dashboard {
-        padding: 20px;
-      }
-
-      .logout-button {
-        padding: 0 12px;
-      }
-    }
-
     @media (max-width: 700px) {
       body {
         padding: 22px 16px;
@@ -476,25 +389,9 @@
     <p class="page-foot">© 2026 Mon espace · Une connexion pensée pour votre tranquillité</p>
   </main>
 
-  <main class="dashboard" id="welcome-page" aria-labelledby="welcome-title" hidden>
-    <header class="dashboard-header">
-      <span class="dashboard-brand">Mon espace</span>
-      <button class="logout-button" id="logout-button" type="button">Se déconnecter</button>
-    </header>
-    <section class="dashboard-content">
-      <h1 id="welcome-title" tabindex="-1">Bienvenue dans votre espace</h1>
-      <p class="dashboard-copy">Vous êtes connecté avec votre compte Google.</p>
-    </section>
-  </main>
-
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script>
     const googleClientId = "271337269871-c1pr9b5q6hncnicp5d4sc7h0ka98m7dh.apps.googleusercontent.com";
-    const loginPage = document.querySelector(".page");
-    const loginTitle = document.getElementById("login-title");
-    const welcomePage = document.getElementById("welcome-page");
-    const welcomeTitle = document.getElementById("welcome-title");
-    const logoutButton = document.getElementById("logout-button");
     const notice = document.getElementById("oauth-notice");
     const loginButton = document.getElementById("google-login");
     const closeButton = document.getElementById("notice-close");
@@ -523,9 +420,8 @@
             return;
           }
 
-          loginPage.hidden = true;
-          welcomePage.hidden = false;
-          welcomeTitle.focus();
+          sessionStorage.setItem("google-connected", "true");
+          window.location.assign("accueil.html");
         }
       });
 
@@ -542,13 +438,6 @@
 
     closeButton.addEventListener("click", () => {
       notice.setAttribute("aria-hidden", "true");
-    });
-
-    logoutButton.addEventListener("click", () => {
-      welcomePage.hidden = true;
-      loginPage.hidden = false;
-      window.google?.accounts?.id.disableAutoSelect();
-      loginTitle.focus();
     });
   </script>
 </body>
