@@ -291,13 +291,8 @@
   </main>
 
   <script>
-    if (localStorage.getItem("google-connected") !== "true") {
-      window.location.replace("index.html");
-    }
-
     document.getElementById("logout-button").addEventListener("click", () => {
-      localStorage.removeItem("google-connected");
-      window.location.replace("index.html");
+      window.location.replace(new URL("index.html", window.location.href).href);
     });
   </script>
 </body>

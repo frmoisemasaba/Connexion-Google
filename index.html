@@ -420,8 +420,7 @@
             return;
           }
 
-          localStorage.setItem("google-connected", "true");
-          window.location.assign("accueil.html");
+          window.location.replace(new URL("accueil.html", window.location.href).href);
         }
       });
 
