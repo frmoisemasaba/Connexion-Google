@@ -297,84 +297,90 @@
     }
 
     .dashboard {
-      width: min(100%, 720px);
-      padding: clamp(30px, 6vw, 64px);
-      border: 1px solid rgb(222 227 238 / 90%);
-      border-radius: 24px;
-      background: #fff;
-      box-shadow: 0 24px 70px rgb(41 53 89 / 11%), 0 2px 8px rgb(41 53 89 / 4%);
-      text-align: center;
+      position: fixed;
+      z-index: 2;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      min-height: 100vh;
+      padding: 24px clamp(20px, 6vw, 80px);
+      background: #f5f7fb;
     }
 
     .dashboard[hidden] {
       display: none;
     }
 
-    .success-mark {
-      width: 58px;
-      height: 58px;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 22px;
-      border-radius: 18px;
-      color: #18764a;
-      background: #e9f8ef;
-      font-size: 28px;
-      font-weight: 700;
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: min(100%, 1100px);
+      margin: 0 auto;
     }
 
-    .dashboard h1 {
-      max-width: none;
+    .dashboard-brand {
+      color: #29344a;
+      font-size: 16px;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+
+    .logout-button {
+      min-height: 42px;
+      padding: 0 16px;
+      border: 1px solid #dce1eb;
+      border-radius: 9px;
       color: #172033;
-      font-size: clamp(30px, 5vw, 40px);
-      letter-spacing: -0.045em;
-    }
-
-    .dashboard-eyebrow {
-      color: #18764a;
-      justify-content: center;
-    }
-
-    .dashboard-copy {
-      max-width: 480px;
-      margin: 16px auto 28px;
-      color: #68738a;
-      font-size: 15px;
-      line-height: 1.7;
-    }
-
-    .dashboard-note {
-      margin: 0 auto 26px;
-      padding: 13px 15px;
-      border: 1px solid #e9ecf2;
-      border-radius: 10px;
-      color: #68738a;
-      background: #f8f9fc;
-      font-size: 12px;
-      line-height: 1.6;
-      text-align: left;
-    }
-
-    .return-button {
-      min-height: 46px;
-      padding: 0 20px;
-      border: 0;
-      border-radius: 10px;
-      color: #fff;
-      background: #394c91;
+      background: #fff;
       cursor: pointer;
       font: inherit;
       font-size: 14px;
       font-weight: 600;
     }
 
-    .return-button:hover {
-      background: #2d3f80;
+    .logout-button:hover {
+      background: #f8f9fc;
     }
 
-    .return-button:focus-visible {
+    .logout-button:focus-visible {
       outline: 3px solid #879cff;
       outline-offset: 3px;
+    }
+
+    .dashboard-content {
+      width: min(100%, 1100px);
+      margin: auto;
+      padding: 80px 0;
+    }
+
+    .dashboard-content h1 {
+      max-width: none;
+      margin: 0;
+      color: #172033;
+      font-size: clamp(32px, 6vw, 52px);
+      letter-spacing: -0.05em;
+      line-height: 1.12;
+    }
+
+    .dashboard-copy {
+      max-width: 520px;
+      margin: 18px 0 0;
+      color: #68738a;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 480px) {
+      .dashboard {
+        padding: 20px;
+      }
+
+      .logout-button {
+        padding: 0 12px;
+      }
     }
 
     @media (max-width: 700px) {
@@ -471,12 +477,14 @@
   </main>
 
   <main class="dashboard" id="welcome-page" aria-labelledby="welcome-title" hidden>
-    <div class="success-mark" aria-hidden="true">✓</div>
-    <p class="eyebrow dashboard-eyebrow">Connexion terminée</p>
-    <h1 id="welcome-title" tabindex="-1">Bienvenue dans votre espace</h1>
-    <p class="dashboard-copy">La réponse de connexion Google a bien été reçue. Vous pouvez maintenant continuer dans votre espace.</p>
-    <p class="dashboard-note">Cette démonstration ne vérifie pas encore l’identité sur un serveur. Avant d’y protéger des données, validez le jeton Google côté serveur.</p>
-    <button class="return-button" id="return-to-login" type="button">Retour à la connexion</button>
+    <header class="dashboard-header">
+      <span class="dashboard-brand">Mon espace</span>
+      <button class="logout-button" id="logout-button" type="button">Se déconnecter</button>
+    </header>
+    <section class="dashboard-content">
+      <h1 id="welcome-title" tabindex="-1">Bienvenue dans votre espace</h1>
+      <p class="dashboard-copy">Vous êtes connecté avec votre compte Google.</p>
+    </section>
   </main>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -486,7 +494,7 @@
     const loginTitle = document.getElementById("login-title");
     const welcomePage = document.getElementById("welcome-page");
     const welcomeTitle = document.getElementById("welcome-title");
-    const returnButton = document.getElementById("return-to-login");
+    const logoutButton = document.getElementById("logout-button");
     const notice = document.getElementById("oauth-notice");
     const loginButton = document.getElementById("google-login");
     const closeButton = document.getElementById("notice-close");
@@ -536,7 +544,7 @@
       notice.setAttribute("aria-hidden", "true");
     });
 
-    returnButton.addEventListener("click", () => {
+    logoutButton.addEventListener("click", () => {
       welcomePage.hidden = true;
       loginPage.hidden = false;
       window.google?.accounts?.id.disableAutoSelect();
