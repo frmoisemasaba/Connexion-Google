@@ -296,6 +296,87 @@
       text-align: center;
     }
 
+    .dashboard {
+      width: min(100%, 720px);
+      padding: clamp(30px, 6vw, 64px);
+      border: 1px solid rgb(222 227 238 / 90%);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgb(41 53 89 / 11%), 0 2px 8px rgb(41 53 89 / 4%);
+      text-align: center;
+    }
+
+    .dashboard[hidden] {
+      display: none;
+    }
+
+    .success-mark {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 22px;
+      border-radius: 18px;
+      color: #18764a;
+      background: #e9f8ef;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .dashboard h1 {
+      max-width: none;
+      color: #172033;
+      font-size: clamp(30px, 5vw, 40px);
+      letter-spacing: -0.045em;
+    }
+
+    .dashboard-eyebrow {
+      color: #18764a;
+      justify-content: center;
+    }
+
+    .dashboard-copy {
+      max-width: 480px;
+      margin: 16px auto 28px;
+      color: #68738a;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .dashboard-note {
+      margin: 0 auto 26px;
+      padding: 13px 15px;
+      border: 1px solid #e9ecf2;
+      border-radius: 10px;
+      color: #68738a;
+      background: #f8f9fc;
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    .return-button {
+      min-height: 46px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 10px;
+      color: #fff;
+      background: #394c91;
+      cursor: pointer;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .return-button:hover {
+      background: #2d3f80;
+    }
+
+    .return-button:focus-visible {
+      outline: 3px solid #879cff;
+      outline-offset: 3px;
+    }
+
     @media (max-width: 700px) {
       body {
         padding: 22px 16px;
@@ -371,7 +452,7 @@
       </div>
 
       <div class="login">
-        <h2>Bienvenue</h2>
+        <h2 id="login-title" tabindex="-1">Bienvenue</h2>
         <p class="login-copy">Utilisez votre compte Google pour accéder à votre espace.</p>
 
         <div class="google-button" id="google-login" aria-describedby="privacy-note"></div>
@@ -389,9 +470,23 @@
     <p class="page-foot">© 2026 Mon espace · Une connexion pensée pour votre tranquillité</p>
   </main>
 
+  <main class="dashboard" id="welcome-page" aria-labelledby="welcome-title" hidden>
+    <div class="success-mark" aria-hidden="true">✓</div>
+    <p class="eyebrow dashboard-eyebrow">Connexion terminée</p>
+    <h1 id="welcome-title" tabindex="-1">Bienvenue dans votre espace</h1>
+    <p class="dashboard-copy">La réponse de connexion Google a bien été reçue. Vous pouvez maintenant continuer dans votre espace.</p>
+    <p class="dashboard-note">Cette démonstration ne vérifie pas encore l’identité sur un serveur. Avant d’y protéger des données, validez le jeton Google côté serveur.</p>
+    <button class="return-button" id="return-to-login" type="button">Retour à la connexion</button>
+  </main>
+
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script>
     const googleClientId = "271337269871-c1pr9b5q6hncnicp5d4sc7h0ka98m7dh.apps.googleusercontent.com";
+    const loginPage = document.querySelector(".page");
+    const loginTitle = document.getElementById("login-title");
+    const welcomePage = document.getElementById("welcome-page");
+    const welcomeTitle = document.getElementById("welcome-title");
+    const returnButton = document.getElementById("return-to-login");
     const notice = document.getElementById("oauth-notice");
     const loginButton = document.getElementById("google-login");
     const closeButton = document.getElementById("notice-close");
@@ -420,7 +515,9 @@
             return;
           }
 
-          showNotice("Connexion réussie", "Votre compte Google est authentifié.", "success");
+          loginPage.hidden = true;
+          welcomePage.hidden = false;
+          welcomeTitle.focus();
         }
       });
 
@@ -437,6 +534,13 @@
 
     closeButton.addEventListener("click", () => {
       notice.setAttribute("aria-hidden", "true");
+    });
+
+    returnButton.addEventListener("click", () => {
+      welcomePage.hidden = true;
+      loginPage.hidden = false;
+      window.google?.accounts?.id.disableAutoSelect();
+      loginTitle.focus();
     });
   </script>
 </body>
